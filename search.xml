@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>TypeScript-01</title>
+    <url>/2020/06/19/TypeScript-01/</url>
+    <content><![CDATA[<h4 id="静态语言与动态语言的对比"><a href="#静态语言与动态语言的对比" class="headerlink" title="静态语言与动态语言的对比"></a>静态语言与动态语言的对比</h4><table>
+<thead>
+<tr>
+<th>静态类型语言</th>
+<th>动态类型语言</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>对类型极其严格</td>
+<td>对类型非常宽松</td>
+</tr>
+<tr>
+<td>立即发现错误</td>
+<td><code>BUG</code>隐藏时间久</td>
+</tr>
+<tr>
+<td>运行效率高，性能好</td>
+<td>运行效率低，性能差</td>
+</tr>
+<tr>
+<td>自文档化</td>
+<td>可读性差</td>
+</tr>
+</tbody></table>
+<h4 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h4><p><code>ES6</code>数据类型</p>
+<ul>
+<li>Boolean,</li>
+<li>Number,</li>
+<li>String,</li>
+<li>Array,</li>
+<li>Function</li>
+<li>Object</li>
+<li>null</li>
+<li>undedfined</li>
+<li>Symbol</li>
+</ul>
+<p><code>TypeScript</code>新增数据类型</p>
+<ul>
+<li>void<ul>
+<li>表示没有任何返回值的类型</li>
+</ul>
+</li>
+<li>any<ul>
+<li>不指定变量类型，那么它的类型就是<code>any</code>类型，可以任意赋值</li>
+</ul>
+</li>
+<li>never<ul>
+<li>永远不会有返回值的类型</li>
+</ul>
+</li>
+<li>元组<ul>
+<li>可以通过<code>push</code>方法添加成员</li>
+<li>通过push添加进去的成员无法访问</li>
+</ul>
+</li>
+<li>枚举</li>
+<li>高级类型</li>
+</ul>
+<h6 id="类型注解"><a href="#类型注解" class="headerlink" title="类型注解"></a>类型注解</h6><ul>
+<li>作用：相当于强类型语言中得类型声明</li>
+<li>语法：(变量|函数): type</li>
+</ul>
+<h6 id="特殊的类型"><a href="#特殊的类型" class="headerlink" title="特殊的类型"></a>特殊的类型</h6><ul>
+<li>undefined</li>
+<li>null</li>
+</ul>
+<blockquote>
+<p>在<code>typescript</code>中，<code>undefined</code>和<code>null</code>是任何类型的子类，不可以讲这两个类型赋值给其他类型，但是可以讲其他类型赋值给这两个类型。需要在编辑器中配置<code>tsconfig.json</code>,<code>strictNullChecks: false</code>在配合联合类型使用</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>TypeScript</category>
+      </categories>
+      <tags>
+        <tag>TypeScript</tag>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/06/19/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>TypeScript-02</title>
+    <url>/2020/06/19/TypeScript-02/</url>
+    <content><![CDATA[<h4 id="枚举类型"><a href="#枚举类型" class="headerlink" title="枚举类型"></a>枚举类型</h4><h6 id="数字枚举"><a href="#数字枚举" class="headerlink" title="数字枚举"></a>数字枚举</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">enum Roles &#123;</span><br><span class="line">    Reporter,</span><br><span class="line">    Developer,</span><br><span class="line">    Maintainer,</span><br><span class="line">    Owner,</span><br><span class="line">    Guest</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以直接访问枚举对象中的值，通过<code>.</code>操作符，返回的是当前属性的索引，默认从<code>0</code>开始。数字枚举具体的实现是通过反向映射来实现。</p>
+<h6 id="字符串枚举"><a href="#字符串枚举" class="headerlink" title="字符串枚举"></a>字符串枚举</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">enum Message &#123;</span><br><span class="line">    Success &#x3D; &#39;成功了&#39;,</span><br><span class="line">    Fail &#x3D; &#39;失败了&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样我们可以直接通过<code>.</code>运算符取值，但是不同的是，字符串枚举没有实现反向映射</p>
+<h6 id="异构枚举"><a href="#异构枚举" class="headerlink" title="异构枚举"></a>异构枚举</h6><p>同时使用数字枚举和字符串枚举，可以实现一个异构枚举，但是异构枚举容易引起人的混淆，所以一般情况不建议使用</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">enum Answer &#123;</span><br><span class="line">    N,</span><br><span class="line">    Y &#x3D; &#39;Yes&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="枚举类型分类"><a href="#枚举类型分类" class="headerlink" title="枚举类型分类"></a>枚举类型分类</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">enum Char &#123;</span><br><span class="line">    a, &#x2F;&#x2F; 常量枚举，没有初始值</span><br><span class="line">    b &#x3D; Char.a, &#x2F;&#x2F; 对已有枚举成员进行引用</span><br><span class="line">    c &#x3D; 1 + 3, &#x2F;&#x2F; 常量表达式</span><br><span class="line">    &#x2F;&#x2F; computed</span><br><span class="line">    d &#x3D; Math.random() &#x2F;&#x2F; 常量表达式，不会在编译阶段进行计算</span><br><span class="line">    f &#x3D; 4 &#x2F;&#x2F; 计算枚举后面的成员需要有初始值</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>常量枚举会在编译被移除，当我们不需要一个对象时，但是需要对象值的时候可以使用，这样可以减少我们编译后的代码量,具体需要使用<code>const</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const enum Test &#123;</span><br><span class="line">    Jan,</span><br><span class="line">    Fed,</span><br><span class="line">    Mar</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="枚举类型-1"><a href="#枚举类型-1" class="headerlink" title="枚举类型"></a>枚举类型</h6><ul>
+<li><code>enum E {A, B}</code>: 枚举类型没有初始值</li>
+<li><code>enum F {a = 0, b = 1}</code> ：枚举类型默认都是数值</li>
+<li><code>enum G {a = &#39;apple&#39;, b = &#39;banana&#39;}</code>: 字符串枚举类型</li>
+</ul>
+<blockquote>
+<p>不同类型得到枚举成员不能进行比较</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>TypeScript</category>
+      </categories>
+      <tags>
+        <tag>TypeScript</tag>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+</search>
