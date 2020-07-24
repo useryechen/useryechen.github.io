@@ -1,0 +1,359 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>koa+mysql搭建项目环境 - 风屿</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+
+  
+  <meta name="keywords" content="风屿, kevin,"> 
+  
+  <meta name="description" content="在实际项目中，我们更多的会使用mysql来做数据存储，..."> 
+  
+  <meta name="author" content="kevin"> 
+
+  
+    <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  
+  
+    <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  
+  
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  
+  
+    <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+  
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_58xq2j9v1id.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css">
+
+  
+
+  
+  
+  
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {}
+    CONFIG = {
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        loadingImage: '/images/theme/loading.gif',
+      },
+      donate_alipay: 'http://yanxuan.nosdn.127.net/80c0430d5ee22dd1085ca396d1ea7b8e.png',
+      donate_wechat: 'http://yanxuan.nosdn.127.net/5b87ced04c054b55fa6970b66e7623d3.png',
+      motto: {
+        api: '',
+        default: '我心匪石，不可转也；我心匪席，不可卷也。'
+      },
+      galleries: {
+        enable: 'true'
+      },
+      fab: {
+        enable: 'true',
+        alwaysShow: 'false'
+      }
+    }
+  </script>
+
+  
+
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+<body class="lock-screen">
+  <div class="loading"></div>
+  <nav class="menu">
+  <div class="menu-close">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <ul class="menu-content">
+    
+    
+    
+    
+    <li class="menu-item"><a href="/ "> 首页</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/archives "> 归档</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/tags "> 标签</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/categories "> 分类</a></li>
+    
+    
+    
+    
+    <li class="menu-item"><a href="/about "> 关于</a></li>
+    
+  </ul>
+  <div class="menu-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="#">kevin</a> .AllRightsReserved</p></div>
+</nav>
+  <main id="main">
+  <div class="container" id="container">
+    <article class="article">
+  <section class="head">
+  <img   class="lazyload" data-original="http://yanxuan.nosdn.127.net/c521367eeb46679fbce280dc175cbf72.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">koa+mysql搭建项目环境</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2020-05-24</span
+        class="post-info-item">
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>3727</span>
+    </div>
+  </div>
+</section>
+  <section class="main">
+    <section class="content">
+      <p>在实际项目中，我们更多的会使用<code>mysql</code>来做数据存储，那么如何使用<code>koa</code>和<code>mysql</code>来搭建基础框架呢？</p>
+<h4 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install koa @koa/router babel-preset-es2015 babel-register koa-bodyparser mysql --save</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建项目结构"><a href="#创建项目结构" class="headerlink" title="创建项目结构"></a>创建项目结构</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- node_modules &#x2F;&#x2F; 依赖</span><br><span class="line">- src &#x2F;&#x2F; 开发目录</span><br><span class="line">    - config &#x2F;&#x2F;基本配置文件目录</span><br><span class="line">        - default.js &#x2F;&#x2F; 数据库、端口等配置</span><br><span class="line">    - controllers &#x2F;&#x2F; 控制器</span><br><span class="line">        - user.js &#x2F;&#x2F; 用户查询控制器</span><br><span class="line">    - mysql &#x2F;&#x2F; 数据库连接</span><br><span class="line">        - db.js &#x2F;&#x2F; 创建连接</span><br><span class="line">        - query.js &#x2F;&#x2F; 封装查询函数</span><br><span class="line">    - app.js &#x2F;&#x2F; 项目主文件</span><br><span class="line">    - router.js &#x2F;&#x2F; 路由接口</span><br><span class="line">    - start.js &#x2F;&#x2F; 项目入口文件</span><br></pre></td></tr></table></figure>
+
+<h4 id="文件说明"><a href="#文件说明" class="headerlink" title="文件说明"></a>文件说明</h4><p><code>config/default.js</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> config = &#123;</span><br><span class="line">  port: <span class="number">3000</span>, <span class="comment">// 启动端口</span></span><br><span class="line">  database: &#123;</span><br><span class="line">    <span class="comment">// 数据库配置</span></span><br><span class="line">    database: <span class="string">"test"</span>,</span><br><span class="line">    host: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">    user: <span class="string">"root"</span>,</span><br><span class="line">    password: <span class="string">"123456"</span>,</span><br><span class="line">    minInterval: <span class="number">200</span>,</span><br><span class="line">    acquireTimeout: <span class="number">300</span>,</span><br><span class="line">    connectionLimit: <span class="number">100</span>,</span><br><span class="line">    connectTimeout: <span class="number">2000</span>,</span><br><span class="line">    queueLimit: <span class="number">0</span>,</span><br><span class="line">    debug: <span class="literal">true</span>,</span><br><span class="line">    waitForConnection: <span class="literal">true</span>,</span><br><span class="line">    multipleStatements: <span class="literal">true</span>, <span class="comment">// 允许多条sql同时执行</span></span><br><span class="line">    acquireTimeout: <span class="number">5000</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>mysql/db.js</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">"use strict"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> mysql <span class="keyword">from</span> <span class="string">"mysql"</span></span><br><span class="line"><span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">"../config/default.js"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> connection = mysql.createConnection(config.databse)</span><br><span class="line">connection.connect()</span><br></pre></td></tr></table></figure>
+
+<p><code>mysql/query.js</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">"use strict"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> mysql <span class="keyword">from</span> <span class="string">"mysql"</span></span><br><span class="line"><span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">"../config/default"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> pool = mysql.createPool(config.database) <span class="comment">// 创建连接池</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// query sql语句入口</span></span><br><span class="line"><span class="keyword">const</span> query = <span class="function">(<span class="params">sql, values</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    pool.getConnection(<span class="function">(<span class="params">err, connection</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 调用已经创建好了的连接池，因为创建每个连接池的时候是非常消耗资源和时间的</span></span><br><span class="line">      <span class="keyword">if</span> (err) &#123;</span><br><span class="line">        reject(err)</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        connection.query(sql, values, (err, fields) =&gt; &#123;</span><br><span class="line">          <span class="keyword">if</span> (err) &#123;</span><br><span class="line">            reject(err)</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            resolve(fields)</span><br><span class="line">          &#125;</span><br><span class="line">          connection.release() <span class="comment">// 执行完成后释放连接池，避免占用连接池资源</span></span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>controllers/user.js</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">"use strict"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> db <span class="keyword">from</span> <span class="string">"../mysql/query"</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>() &#123;</span><br><span class="line">    <span class="keyword">this</span>.queryUsers = <span class="keyword">this</span>.queryUsers.bind(<span class="keyword">this</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> queryUsers(ctx) &#123;</span><br><span class="line">    <span class="keyword">let</span> sql = <span class="string">"SELECT * FROM user"</span></span><br><span class="line">    <span class="keyword">await</span> db</span><br><span class="line">      .query(sql)</span><br><span class="line">      .then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (res &amp;&amp; res.length) &#123;</span><br><span class="line">          ctx.body = &#123;</span><br><span class="line">            code: <span class="number">20000</span>,</span><br><span class="line">            message: <span class="string">"查询成功"</span>,</span><br><span class="line">            data: res,</span><br><span class="line">          &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          ctx.body = &#123;</span><br><span class="line">            code: <span class="number">50001</span>,</span><br><span class="line">            message: <span class="string">"查询失败"</span>,</span><br><span class="line">            data: <span class="literal">null</span>,</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">      .catch(<span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">        ctx.body = &#123;</span><br><span class="line">          code: <span class="number">50002</span>,</span><br><span class="line">          message: <span class="string">"服务器内部错误"</span>,</span><br><span class="line">          data: <span class="literal">null</span>,</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>app.js</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Koa <span class="keyword">from</span> <span class="string">"koa"</span></span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">"./router"</span></span><br><span class="line"><span class="keyword">import</span> db <span class="keyword">from</span> <span class="string">"./mysql/db"</span></span><br><span class="line"><span class="keyword">import</span> Bodyparser <span class="keyword">from</span> <span class="string">"koa-bodyparser"</span></span><br><span class="line"><span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">"./config/default"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa()</span><br><span class="line"></span><br><span class="line">app.use(Bodyparser()).use(router.routes()).use(router.allowedMethods())</span><br><span class="line"></span><br><span class="line">app.listen(config.port, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`服务已启动，端口：<span class="subst">$&#123;config.port&#125;</span>`</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><code>router.js</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Router <span class="keyword">from</span> <span class="string">"@koa/router"</span></span><br><span class="line"><span class="keyword">import</span> UserController <span class="keyword">from</span> <span class="string">"./controllers/user"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> Router()</span><br><span class="line"></span><br><span class="line"><span class="comment">// user路由</span></span><br><span class="line">router.post(<span class="string">"/user"</span>, UserController.queryUsers)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> router</span><br></pre></td></tr></table></figure>
+
+<p><code>start.js</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 之所以用这个启动文件，是为了使用register来让我们的项目支持ES6以及ES7的一些语法，例如import、export、async、await等</span></span><br><span class="line"><span class="comment">// 生产项目中不建议使用babel-register来这么处理，因为相当于每次进入文件的时候都需要用babel-register来进行文件转换，性能会大打折扣</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">require</span>(<span class="string">"babel-register"</span>)(&#123;</span><br><span class="line">  presets: [<span class="string">"es2015"</span>],</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="built_in">require</span>(<span class="string">"./app"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这样我们的项目基础框架就搭建完成了，接下来就可以进行更多的接口开发了，更多的高级用法后续我们会集成进来。例如：<code>JWT</code>鉴权、<code>redis</code>缓存、文件上传、压缩等等</p>
+
+    </section>
+    <section class="extra">
+      
+        <section class="donate">
+  <div class="qrcode">
+    <img   class="lazyload" data-original="http://yanxuan.nosdn.127.net/80c0430d5ee22dd1085ca396d1ea7b8e.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+      
+      
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/koa/" rel="tag">koa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/" rel="tag">node</a></li></ul>
+
+      
+<nav class="nav">
+  
+    <a href="/2020/06/19/TypeScript-01/"><i class="iconfont iconleft"></i>TypeScript-01</a>
+  
+  
+    <a href="/2020/03/24/%E5%AE%9E%E7%8E%B0Virtual-DOM/">实现Virtual_DOM<i class="iconfont iconright"></i></a>
+  
+</nav>
+
+    </section>
+    
+      <section class="comments">
+        
+          <div class="btn" id="comments-btn">查看评论</div>
+        
+        
+  <div id="valine"></div>
+  <script defer src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  <script>
+    window.onload = function () {
+      var loadValine = function () {
+        new Valine({
+          el: '#valine',
+          app_id: "xX8XhsxFWKBtsJtBIzaCuwFr-gzGzoHsz",
+          app_key: "Ol8aa0I9jnwmRYXiTgyyoThS",
+          placeholder: "留下脚印",
+          avatar: "",
+          pageSize: "10",
+          lang: "zh-CN",
+        });
+      }
+      if ( true ) {
+        $("#comments-btn").on("click", function () {
+          $(this).hide();
+          loadValine();
+        });
+      } else {
+        loadValine();
+      }
+    };
+  </script>
+  
+      </section>
+    
+  </section>
+</article>
+  </div>
+</main>
+  <footer class="footer">
+  <div class="footer-social">
+    
+    
+    
+    
+    
+    <a href="tencent://message/?Menu=yes&uin=644398737 " target="_blank" onMouseOver="this.style.color= '#12B7F5'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconQQ "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="javascript:; " target="_blank" onMouseOver="this.style.color= '#09BB07'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconwechat-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="https://github.com/useryechen " target="_blank" onMouseOver="this.style.color= '#24292E'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  icongithub-fill "></i>
+    </a>
+    
+    
+    
+    
+    
+    <a href="mailto:useryechen@gmail.com " target="_blank" onMouseOver="this.style.color='#FFBE5B'"
+      onMouseOut="this.style.color='#33333D'">
+      <i class="iconfont footer-social-item  iconmail"></i>
+    </a>
+    
+  </div>
+  <div class="footer-copyright"><p>Copyright© 2019-2020 | <a target="_blank" href="#">kevin</a> .AllRightsReserved</p></div>
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  <div class="fab fab-menu">
+    <i class="iconfont iconmenu"></i>
+  </div>
+  
+</body>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcss.com/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+
+
+<script src="https://cdn.bootcdn.net/ajax/libs/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+<script>
+  (function () {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</html>

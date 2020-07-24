@@ -7,7 +7,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>posts - 风屿</title>
+  <title>node基础学习(一) - 风屿</title>
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="google" content="notranslate" />
@@ -15,6 +15,7 @@
   
   <meta name="keywords" content="风屿, kevin,"> 
   
+  <meta name="description" content="File 部分用法123456789const fs ..."> 
   
   <meta name="author" content="kevin"> 
 
@@ -135,20 +136,49 @@
   <div class="container" id="container">
     <article class="article">
   <section class="head">
-  <img   class="lazyload" data-original="/images/theme/post-image.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <img   class="lazyload" data-original="http://yanxuan.nosdn.127.net/c521367eeb46679fbce280dc175cbf72.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
   <div class="head-mask">
-    <h1 class="head-title">posts</h1>
+    <h1 class="head-title">node基础学习(一)</h1>
     <div class="head-info">
-      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2020-06-19</span
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>2020-07-24</span
         class="post-info-item">
       
-      <span class="post-info-item"><i class="iconfont iconfont-size"></i>0</span>
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>1260</span>
     </div>
   </div>
 </section>
   <section class="main">
     <section class="content">
-      
+      <h4 id="File-部分"><a href="#File-部分" class="headerlink" title="File 部分"></a>File 部分</h4><h5 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line">fs.readFile(<span class="string">'filepath'</span>, (err, data) &#123;</span><br><span class="line">    <span class="keyword">if</span>(err) &#123;</span><br><span class="line">        res.write(<span class="string">"错了"</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        res.write(data)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>本地通过 localhost:port/xxx.html 访问服务器失败，报跨域问题或者本地资源不能加载问题或者请求失败问题<br>解决方案：因为本地开启的只是一个 node 服务，浏览器不能通过 node 服务去读取本地静态资源，需要通过<code>fs</code>模块去先读取静态文件，然后通过 node 服务器返回，这样才能读取。</p>
+</li>
+<li><p>readFile 读取本地资源路径问题<br>解决方案：一般我们将静态资源会统一放在一个文件夹里面，而不是直接跟服务器文件放在一个同级目录，所以一般我们在通过<code>readFile</code>方法读取资源时，如果静态文件在服务器文件的同级目录，则<code>filepath</code>通过<code>./xxx.xx</code>去访问，如果静态文件是在统一的一个文件夹内，则需要加上文件夹目录名称</p>
+</li>
+</ol>
+<h4 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h4><h5 id="为什么需要缓存"><a href="#为什么需要缓存" class="headerlink" title="为什么需要缓存"></a>为什么需要缓存</h5><p>减少服务器带宽，这样可以节约客户端访问带来的流量问题。不然带宽成本高，所以需要通过来缓存常用的或者不太修改的一些文件</p>
+<h5 id="缓存命中率"><a href="#缓存命中率" class="headerlink" title="缓存命中率"></a>缓存命中率</h5><p>终端用户访问加速节点时，如果该节点有缓存住了要被访问的数据时就叫做命中，如果没有的话需要回原服务器取，就是没有命中。取数据的过程与用户访问是同步进行的，所以即使是重新取的新数据，用户也不会感觉到有延时。 命中率=命中数/（命中数+没有命中数）， 缓存命中率是判断加速效果好坏的重要因素之一。</p>
+<h5 id="缓存策略"><a href="#缓存策略" class="headerlink" title="缓存策略"></a>缓存策略</h5><p>通过<code>cache-control</code>,可以设置缓存或者不缓存</p>
+<p>设置缓存步骤：</p>
+<ul>
+<li>通过<code>fs</code>模块提供的<code>stat</code>方法来获取到客户端访问的当前文件的各种信息</li>
+<li>如果发生错误，则证明客户端访问的文件不存在，否则判断当前接收到的请求头有没有<code>if-modified-since</code>属性。</li>
+<li>如果有，则证明已经获取到客户端当前文件的最后一次修改时间，再与服务器端当前文件的最后一次修改时间进行比较</li>
+<li>如果服务度端的时间较新，则将当前时间通过设置头文件的<code>Last-Modified</code>属性，来更新客户端文件修改时间</li>
+<li>否则就证明当前客户端文件是最新的，不需要重新从服务器端请求，从缓存中获取即可</li>
+<li></li>
+</ul>
+<h4 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h4><ul>
+<li>多线程：性能高，复杂，对程序员要求高</li>
+<li>多进程：性能略低；简单、对于程序员要求低</li>
+</ul>
+<p><code>Node</code>默认：单进程、单线程</p>
+<p>一般采用主进程负责派生子进程，子进程负责工作。万一主进程崩了，子进程也全部会被杀死</p>
+<p>多进程： 安全、性能高</p>
+<p>进程：<br>1、普通程序不能“创建”进程，只有系统进程才能创建进程，只有主进程能分裂<br>2、进程是分裂出来的<br>3、分裂出来的两个进程执行的是同一套代码<br>4、父子进程之间可以共享句柄()</p>
+<p>多进程工作方式：一个进程先工作，其他进程闲置，等待这个进程满了，再调度第二个进程进行工作</p>
+
     </section>
     <section class="extra">
       
@@ -163,7 +193,18 @@
 </section>
       
       
+  <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/" rel="tag">node</a></li></ul>
+
       
+<nav class="nav">
+  
+    <a href="/2020/07/28/vue%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%8A%A8%E7%94%BB/"><i class="iconfont iconleft"></i>vue中使用动画</a>
+  
+  
+    <a href="/2020/07/24/vue-cli3%E4%BD%BF%E7%94%A8vant-ui%E6%9E%84%E5%BB%BA%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%A1%B9%E7%9B%AE/">vue-cli3使用vant-ui构建移动端项目<i class="iconfont iconright"></i></a>
+  
+</nav>
+
     </section>
     
       <section class="comments">
